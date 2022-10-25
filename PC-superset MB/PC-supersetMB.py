@@ -108,9 +108,8 @@ def PC(data, CItest_type, max_size, alpha):
     return adj
 
 
-def show_graph(data,num_nodes,adj_test):
+def show_graph(num_nodes,adj_test):
 
-    print("total nodes:", num_nodes)
     G_zero = nx.DiGraph()
     adj_zero = np.zeros([num_nodes, num_nodes])
     count_children = []
@@ -123,13 +122,13 @@ def show_graph(data,num_nodes,adj_test):
             count_children.append(j)
             res.add(j)
 
-        # if adj_test[0][j] == 1:
-        #     for k in range(num_nodes):
-        #         if adj_test[k][j] == 1 and k != 0:
-        #             cf.add(k)
-        #             adj_zero[k][j] = 1
-        #             G_zero.add_edge(k,j)
-        #             res.add(k)
+        if adj_test[0][j] == 1:
+            for k in range(num_nodes):
+                if adj_test[k][j] == 1 and k != 0:
+                    cf.add(k)
+                    adj_zero[k][j] = 1
+                    G_zero.add_edge(k,j)
+                    res.add(k)
 
         if adj_test[j][0]==1:
             adj_zero[j][0] = 1
@@ -162,7 +161,7 @@ def show_graph(data,num_nodes,adj_test):
         return result
 
 # main
-data =np.loadtxt(open("TCGA_LUAD_fs100.csv", "rb"), delimiter=",", skiprows=1)
+data =np.loadtxt(open("dataset", "rb"), delimiter=",", skiprows=1)
 CItest_type = 'new'
 max_size = 1
 alpha = 0.05
@@ -171,10 +170,12 @@ data_type = data[:,0]
 data -= np.mean(data, axis=0)
 data = data.transpose()
 adj_test = PC(data, CItest_type, max_size, alpha)
-res = show_graph(data, num_node, adj_test)
-data1 = pd.read_csv("TCGA_LUAD_fs100.csv",header=None, usecols=res)
-print(data1.shape)
-np.savetxt("test.csv", data1, delimiter=",")
+res = show_graph(num_node, adj_test)
+
+# save
+# data1 = pd.read_csv("TCGA_LUAD_fs100.csv",header=None, usecols=res)
+# print(data1.shape)
+# np.savetxt("test.csv", data1, delimiter=",")
 
 
 
