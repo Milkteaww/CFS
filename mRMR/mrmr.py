@@ -103,12 +103,5 @@ if __name__ == "__main__":
 
 		print("error mean %f" % error_mean[i])
 
-	feat_ind.append(0)
+	
 	print("select features are：", feat_ind)
-	feat_ind.sort()
-	print("After sorted, selected features are：", feat_ind)
-	df = pd.read_csv(datafile, skipinitialspace=True, usecols=feat_ind)
-	print(df.shape)
-	df = df.values
-	df = np.insert(df, 0, feat_ind, axis=0)
-	np.savetxt("mrmrdata.csv", df, delimiter=",")
